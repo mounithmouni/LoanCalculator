@@ -5,8 +5,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AmortizationSchedule from "../components/AmortizationSchedule";
+import axios from "axios";
 
 export default function Home() {
   const [loanAmount, setLoanAmount] = useState("100000");
@@ -14,13 +15,24 @@ export default function Home() {
   const [tenure, setTenure] = useState("5");
   const [emi, setEmi] = useState(null);
   const [schedule, setSchedule] = useState([]);
-  const [currency, setCurrency] = useState("USA");
+  const [currency, setCurrency] = useState("USD");
+  const [conversionRate, setConversionRate] = useState(1);
+  const fetchData = async (val) => {
+    const res = await axios.get(
+      `https://v6.exchangerate-api.com/v6/4df3bade102da003b9e67388/latest/USD`
+    );
+    const datas = res.data.conversion_rates[val];
+    setConversionRate(datas);
+    console.log(datas);
+  };
 
   const handleChange = (e) => {
     setCurrency(e.target.value);
+    fetchData(e.target.value);
   };
 
   const calculateEmi = () => {
+    console.log(currency);
     const principal = parseFloat(loanAmount);
     const iRate = parseFloat(interstRate) / 12 / 100;
     const months = parseInt(tenure) * 12;
@@ -53,6 +65,10 @@ export default function Home() {
     }
     setSchedule(newSchedule);
     console.log(schedule);
+  };
+  const handleReset = () => {
+    setSchedule([]);
+    setConversionRate(1);
   };
 
   return (
@@ -118,18 +134,18 @@ export default function Home() {
               <MenuItem value="CAD">CAD</MenuItem>
             </Select>
           </FormControl>
-          <Button
-            variant="outlined"
-            className="h-12"
-            onClick={() => setSchedule([])}
-          >
+          <Button variant="outlined" className="h-12" onClick={handleReset}>
             Reset Table
           </Button>
         </div>
       )}
       {schedule.length !== 0 && (
         <div>
-          <AmortizationSchedule schedule={schedule} />
+          <AmortizationSchedule
+            schedule={schedule}
+            conversionRate={conversionRate}
+            currency={currency}
+          />
         </div>
       )}
     </div>
