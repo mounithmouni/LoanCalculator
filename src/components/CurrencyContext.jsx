@@ -12,7 +12,6 @@ export const CurrencyProvider = ({ children }) => {
     try {
       await getExchangeRate()
         .then((value) => {
-          debugger;
           if (value && value.data && value.data.conversion_rates) {
             const data = value.data.conversion_rates[val];
             setCurrentExchange(data || 1);
