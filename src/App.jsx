@@ -4,19 +4,22 @@ import Body from "./components/Body";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import ExchangeRates from "./pages/ExchangeRates";
+import { CurrencyProvider } from "./components/CurrencyContext";
 
 export default function App() {
   return (
     <>
-      <BrowserRouter basename="/">
-        <Routes>
-          <Route path="/" element={<Body />}>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/about" element={<About />}></Route>
-            <Route path="/exchange" element={<ExchangeRates />}></Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <CurrencyProvider>
+        <BrowserRouter basename="/">
+          <Routes>
+            <Route path="/" element={<Body />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="exchange" element={<ExchangeRates />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </CurrencyProvider>
     </>
   );
 }

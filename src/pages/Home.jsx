@@ -1,38 +1,21 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import AmortizationSchedule from "../components/AmortizationSchedule";
-import axios from "axios";
+import CurrencyFilter from "../components/CurrencyFilter";
+import { CurrencyContext } from "../components/CurrencyContext";
 
 export default function Home() {
   const [loanAmount, setLoanAmount] = useState("100000");
   const [interstRate, setInterestRate] = useState("8.5");
   const [tenure, setTenure] = useState("5");
   const [emi, setEmi] = useState(null);
+  const { currency, conversionRate, handleChange, handleReset } =
+    useContext(CurrencyContext);
   const [schedule, setSchedule] = useState([]);
-  const [currency, setCurrency] = useState("USD");
-  const [conversionRate, setConversionRate] = useState(1);
-  const fetchData = async (val) => {
-    const res = await axios.get(
-      `https://v6.exchangerate-api.com/v6/4df3bade102da003b9e67388/latest/USD`
-    );
-    const datas = res.data.conversion_rates[val];
-    setConversionRate(datas);
-    console.log(datas);
-  };
-
-  const handleChange = (e) => {
-    setCurrency(e.target.value);
-    fetchData(e.target.value);
-  };
 
   const calculateEmi = () => {
-    console.log(currency);
     const principal = parseFloat(loanAmount);
     const iRate = parseFloat(interstRate) / 12 / 100;
     const months = parseInt(tenure) * 12;
@@ -64,11 +47,6 @@ export default function Home() {
       });
     }
     setSchedule(newSchedule);
-    console.log(schedule);
-  };
-  const handleReset = () => {
-    setSchedule([]);
-    setConversionRate(1);
   };
 
   return (
@@ -106,40 +84,20 @@ export default function Home() {
         </Button>
       </div>
       <div>
-        {emi && schedule.length !== 0 && (
+        {emi && schedule.length > 0 && (
           <div>
             <h1 className="text-xl">Monthly EMI:{emi}</h1>
           </div>
         )}
       </div>
-      {schedule.length !== 0 && (
-        <div className="flex justify-between  items-center">
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel sx={{ fontSize: "12px", textAlign: "center" }}>
-              Currency
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              defaultValue={"USD"}
-              label="Age"
-              onChange={handleChange}
-            >
-              <MenuItem value="USD">USD</MenuItem>
-              <MenuItem value="EUR">EUR</MenuItem>
-              <MenuItem value="INR">INR</MenuItem>
-              <MenuItem value="GBP">GBP</MenuItem>
-              <MenuItem value="JPY">JPY</MenuItem>
-              <MenuItem value="AUD">AUD</MenuItem>
-              <MenuItem value="CAD">CAD</MenuItem>
-            </Select>
-          </FormControl>
-          <Button variant="outlined" className="h-12" onClick={handleReset}>
-            Reset Table
-          </Button>
-        </div>
+      {emi && schedule && (
+        <CurrencyFilter
+          schedule={schedule}
+          handleChange={handleChange}
+          handleReset={handleReset}
+        />
       )}
-      {schedule.length !== 0 && (
+      {schedule && schedule.length !== 0 && (
         <div>
           <AmortizationSchedule
             schedule={schedule}

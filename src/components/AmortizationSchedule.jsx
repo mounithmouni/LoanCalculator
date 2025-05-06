@@ -96,13 +96,16 @@ export default function AmortizationSchedule({
   }
   return (
     <Paper style={{ height: 400, width: "100%" }}>
-      <h1 className="ml-2 p-2 text-xl">Amortization Schedule{`()`}</h1>
+      <h1 className="ml-2 p-2 text-xl">
+        Amortization schedule{`(${currency})`}
+      </h1>
       <TableVirtuoso
         data={schedule}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
       />
+      {/* {console.log(schedule)} */}
     </Paper>
   );
 }
