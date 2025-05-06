@@ -6,13 +6,14 @@ export const CurrencyContext = createContext();
 export const CurrencyProvider = ({ children }) => {
   const [currency, setCurrency] = useState("USD");
   const [conversionRate, setConversionRate] = useState(1);
+  const [conversion_rates, setConversion_Rates] = useState([]);
 
   const fetchData = async (val) => {
     try {
-      const res = await axios.get(
-        `https://v6.exchangerate-api.com/v6/4df3bade102da003b9e67388/latest/USD`
-      );
+      const res =
+        await axios.get`https://v6.exchangerate-api.com/v6/c6a1f078b28f498f7e7342c4/latest/USD`;
       const data = res.data.conversion_rates[val];
+      setConversion_Rates(res.data.conversion_rates);
       setConversionRate(data || 1);
     } catch (error) {
       console.error("Error fetching exchange rates:", error);
@@ -37,7 +38,13 @@ export const CurrencyProvider = ({ children }) => {
 
   return (
     <CurrencyContext.Provider
-      value={{ currency, conversionRate, handleChange, handleReset }}
+      value={{
+        currency,
+        conversionRate,
+        conversion_rates,
+        handleChange,
+        handleReset,
+      }}
     >
       {children}
     </CurrencyContext.Provider>

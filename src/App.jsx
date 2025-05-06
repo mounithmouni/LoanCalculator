@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import ExchangeRates from "./pages/ExchangeRates";
 import { CurrencyProvider } from "./components/CurrencyContext";
+import Error from "./pages/Error";
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
               <Route path="exchange" element={<ExchangeRates />} />
+              <Route path="contact" element={<Error />} />
+              <Route path="*" element={<Error />} />
             </Route>
           </Routes>
         </BrowserRouter>
