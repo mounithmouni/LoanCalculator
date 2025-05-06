@@ -1,21 +1,16 @@
 import React, { useContext } from "react";
 import { CurrencyContext } from "../components/CurrencyContext";
-import ConversionRates from "../components/ConversionRates";
+import ConversionRatesTable from "../components/ConversionRatesTable";
 
 export default function ExchangeRates() {
-  const { currency, conversion_rates } = useContext(CurrencyContext);
+  const { currencyType } = useContext(CurrencyContext);
 
-  return conversion_rates.length !== 0 ? (
-    <div className="mt-20 mx-50">
-      <h1 className="mt-26">Live Exchange Rates {`(Base: ${currency})`}</h1>
-      <ConversionRates
-        conversion_rates={conversion_rates}
-        currency={currency}
-      />
+  return (
+    <div className="sm:mt-10 sm:mx-50">
+      <h1 className="text-xl mt-10 ml-2 sm:mt-12 sm:ml-0 sm:text-3xl">
+        Live Exchange Rates {`(Base: ${currencyType})`}
+      </h1>
+      <ConversionRatesTable currencyType={currencyType} />
     </div>
-  ) : (
-    <p className="mt-66 flex justify-center text-2xl uppercase text-red-500">
-      No Live Updates
-    </p>
   );
 }

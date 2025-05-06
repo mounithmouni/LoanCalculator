@@ -2,16 +2,16 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState, useContext, useEffect } from "react";
-import AmortizationSchedule from "../components/AmortizationSchedule";
 import CurrencyFilter from "../components/CurrencyFilter";
 import { CurrencyContext } from "../components/CurrencyContext";
+import AmortizationScheduleTable from "../components/AmortizationScheduleTable";
 
 export default function Home() {
   const [loanAmount, setLoanAmount] = useState("100000");
   const [interstRate, setInterestRate] = useState("8.5");
   const [tenure, setTenure] = useState("5");
   const [emi, setEmi] = useState(null);
-  const { currency, conversionRate, handleChange, handleReset } =
+  const { currencyType, currentExchange, handleChange, handleReset } =
     useContext(CurrencyContext);
   const [schedule, setSchedule] = useState([]);
 
@@ -50,12 +50,14 @@ export default function Home() {
   };
 
   return (
-    <div className="my-20 flex flex-col gap-5 justify-start mx-60">
+    <div className="sm:mt-5 flex flex-col gap-5 justify-start sm:mx-60">
       <div>
-        <h1 className="text-4xl">Loan Calculator Dashboard</h1>
+        <h1 className="text-2xl  sm:w-full sm:text-4xl">
+          Loan Calculator Dashboard
+        </h1>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-4 w-1/2 sm:w-full sm:flex-row sm:gap-2">
         <TextField
           required
           id="outlined-required"
@@ -86,7 +88,7 @@ export default function Home() {
       <div>
         {emi && schedule.length > 0 && (
           <div>
-            <h1 className="text-xl">Monthly EMI:{emi}</h1>
+            <h1 className="sm:text-xl">Monthly EMI:{emi}</h1>
           </div>
         )}
       </div>
@@ -95,14 +97,15 @@ export default function Home() {
           schedule={schedule}
           handleChange={handleChange}
           handleReset={handleReset}
+          currencyType={currencyType}
         />
       )}
       {schedule && schedule.length !== 0 && (
         <div>
-          <AmortizationSchedule
+          <AmortizationScheduleTable
             schedule={schedule}
-            conversionRate={conversionRate}
-            currency={currency}
+            conversionRate={currentExchange}
+            currencyType={currencyType}
           />
         </div>
       )}

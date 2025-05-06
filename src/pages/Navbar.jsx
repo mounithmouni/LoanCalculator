@@ -14,7 +14,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { NavLink } from "react-router-dom"; // Import Link
+import { NavLink } from "react-router-dom";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 const drawerWidth = 240;
 
@@ -23,7 +25,6 @@ const navItems = [
   { label: "Home", path: "/" },
   { label: "Exchange Rates(live)", path: "/exchange" },
   { label: "About", path: "/about" },
-  { label: "Contact", path: "/contact" },
 ];
 
 function Navbar(props) {
@@ -37,7 +38,7 @@ function Navbar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        Loan Calculator
       </Typography>
       <Divider />
       <List>
@@ -88,6 +89,13 @@ function Navbar(props) {
           >
             Loan Calculator
           </Typography>
+          <IconButton
+            style={{ paddingRight: "10px" }}
+            color="inherit"
+            onClick={props.toggleTheme}
+          >
+            {props.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Button
@@ -96,7 +104,7 @@ function Navbar(props) {
                 to={item.path}
                 style={({ isActive }) => ({
                   color: "#fff",
-                  backgroundColor: isActive ? "#FFFFFF30" : "transparent", // Use MUI primary or any color
+                  backgroundColor: isActive ? "#FFFFFF30" : "transparent",
                   fontWeight: isActive ? "bold" : "normal",
                   "&:hover": {
                     backgroundColor: isActive ? "#1565c0" : "#ffffff22",
@@ -116,7 +124,7 @@ function Navbar(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },

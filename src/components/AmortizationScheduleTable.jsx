@@ -8,10 +8,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TableVirtuoso } from "react-virtuoso";
 
-export default function AmortizationSchedule({
+export default function AmortizationScheduleTable({
   schedule,
   conversionRate,
-  currency,
+  currencyType,
 }) {
   const columns = [
     { width: 80, label: "Month", dataKey: "month", numeric: true },
@@ -85,7 +85,7 @@ export default function AmortizationSchedule({
             align={column.numeric ? "right" : "left"}
           >
             {column.dataKey !== "month"
-              ? currencySymbols[currency] +
+              ? currencySymbols[currencyType] +
                 " " +
                 (row[column.dataKey] * conversionRate).toFixed(2)
               : row[column.dataKey]}
@@ -95,17 +95,19 @@ export default function AmortizationSchedule({
     );
   }
   return (
-    <Paper style={{ height: 400, width: "100%" }}>
-      <h1 className="ml-2 p-2 text-xl">
-        Amortization schedule{`(${currency})`}
-      </h1>
-      <TableVirtuoso
-        data={schedule}
-        components={VirtuosoTableComponents}
-        fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
-      />
-      {/* {console.log(schedule)} */}
-    </Paper>
+    <div className="mb-20 sm:mb-0">
+      <Paper style={{ height: 400, width: "100%" }}>
+        <h1 className="ml-2 p-2 text-xl">
+          Amortization schedule{`(${currencyType})`}
+        </h1>
+        <TableVirtuoso
+          data={schedule}
+          components={VirtuosoTableComponents}
+          fixedHeaderContent={fixedHeaderContent}
+          itemContent={rowContent}
+          style={{ minWidth: "60%" }}
+        />
+      </Paper>
+    </div>
   );
 }

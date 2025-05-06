@@ -1,23 +1,29 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import getExchangeRate from "../api/apiClient";
 
 export const CurrencyContext = createContext();
 
 export const CurrencyProvider = ({ children }) => {
-  const [currency, setCurrency] = useState("USD");
-  const [conversionRate, setConversionRate] = useState(1);
-  const [conversion_rates, setConversion_Rates] = useState([]);
+  const [currencyType, setCurrency] = useState("USD");
+  const [currentExchange, setCurrentExchange] = useState(1);
 
   const fetchData = async (val) => {
     try {
-      const res =
-        await axios.get`https://v6.exchangerate-api.com/v6/c6a1f078b28f498f7e7342c4/latest/USD`;
-      const data = res.data.conversion_rates[val];
-      setConversion_Rates(res.data.conversion_rates);
-      setConversionRate(data || 1);
+      await getExchangeRate()
+        .then((value) => {
+          debugger;
+          if (value && value.data && value.data.conversion_rates) {
+            const data = value.data.conversion_rates[val];
+            setCurrentExchange(data || 1);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } catch (error) {
       console.error("Error fetching exchange rates:", error);
-      setConversionRate(1);
+      setCurrentExchange(1);
     }
   };
 
@@ -29,19 +35,14 @@ export const CurrencyProvider = ({ children }) => {
 
   const handleReset = () => {
     setCurrency("USD");
-    setConversionRate(1);
+    setCurrentExchange(1);
   };
-
-  //   useEffect(() => {
-  //     fetchData(currency);
-  //   }, [currency]);
 
   return (
     <CurrencyContext.Provider
       value={{
-        currency,
-        conversionRate,
-        conversion_rates,
+        currencyType,
+        currentExchange,
         handleChange,
         handleReset,
       }}

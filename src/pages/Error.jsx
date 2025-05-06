@@ -1,30 +1,54 @@
 import React from "react";
+import { Box, Button, Container, Typography, Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Error() {
+  const navigate = useNavigate();
+
   return (
-    <div className="mt-20">
-      <main class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-        <div class="text-center">
-          <p class="text-base font-semibold text-indigo-600">404</p>
-          <h1 class="mt-4 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
+    <Box
+      sx={{
+        minHeight: "80vh",
+        bgcolor: "background.default",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 3,
+        py: { xs: 8, sm: 12 },
+      }}
+    >
+      <Container maxWidth="md">
+        <Box textAlign="center">
+          <Typography
+            variant="h2"
+            component="h1"
+            sx={{ mt: 2, fontWeight: 600 }}
+          >
             Page not found
-          </h1>
-          <p class="mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
+          </Typography>
+
+          <Typography
+            variant="body1"
+            sx={{ mt: 3, mb: 5, color: "text.secondary" }}
+          >
             Sorry, we couldn’t find the page you’re looking for.
-          </p>
-          <div class="mt-10 flex items-center justify-center gap-x-6">
-            <a
-              href="#"
-              class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          </Typography>
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            justifyContent="center"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/")}
             >
               Go back home
-            </a>
-            <a href="#" class="text-sm font-semibold text-gray-900">
-              Contact support <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
-        </div>
-      </main>
-    </div>
+            </Button>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 }

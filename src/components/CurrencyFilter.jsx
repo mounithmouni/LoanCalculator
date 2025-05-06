@@ -9,11 +9,12 @@ export default function CurrencyFilter({
   schedule,
   handleChange,
   handleReset,
+  currency,
 }) {
   return (
     <div>
       {schedule.length !== 0 && (
-        <div className="flex justify-between  items-center">
+        <div className="flex justify-between items-center">
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel sx={{ fontSize: "12px", textAlign: "center" }}>
               Currency
@@ -23,6 +24,7 @@ export default function CurrencyFilter({
               id="demo-simple-select"
               defaultValue={"USD"}
               label="Age"
+              value={currency}
               onChange={handleChange}
             >
               <MenuItem value="USD">USD</MenuItem>
@@ -34,7 +36,7 @@ export default function CurrencyFilter({
               <MenuItem value="CAD">CAD</MenuItem>
             </Select>
           </FormControl>
-          <Button variant="outlined" className="h-12" onClick={handleReset}>
+          <Button variant="outlined" className="sm:h-12" onClick={handleReset}>
             Reset Table
           </Button>
         </div>
